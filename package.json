@@ -5,11 +5,21 @@
   "repository": "https://github.com/yotsugi-vip/react-study.git",
   "author": "yotsugi <dev01.topaz@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start" : "webpack-dev-server --open",
+    "build" : "webpack",
+    "build-prod" : "webpack --mode=production"
+  },
   "dependencies": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
+    "@types/node": "^13.9.5",
+    "@types/react": "^16.9.27",
+    "@types/react-dom": "^16.9.5",
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.8.3",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
