@@ -5,6 +5,7 @@ class App extends Component{
         return(
             <>
             <h1>Hello new world</h1>
+            <p>Really!?</p>
             </>
         )
     }
