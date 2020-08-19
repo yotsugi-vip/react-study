@@ -1,0 +1,1 @@
+[redux参考](https://nametake.github.io/posts/2018/12/05/typescript-react-redux-tutorial/)
