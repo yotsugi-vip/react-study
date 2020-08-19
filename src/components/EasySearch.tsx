@@ -79,7 +79,7 @@ class InputHex extends Component {
 
         this.setState({
             inputValue: event.target.value,
-            inputCode: regex.test(val) ? val : this.state.colorCode
+            colorCode: regex.test(val) ? val : this.state.colorCode
         });
     }
 
@@ -93,7 +93,7 @@ class InputHex extends Component {
                         </label>
                     </p>
                     <div style={{ marginLeft: "5px" }}>
-                        <ColorTips colorCode={this.state.inputValue} />
+                        <ColorTips colorCode={this.state.colorCode} />
                     </div>
                 </div>
             </div>

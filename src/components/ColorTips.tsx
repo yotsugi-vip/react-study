@@ -138,7 +138,7 @@ export class ColorTips extends Component<IProps, IState> {
                             color: this.blackOrWhite(this.props.colorCode),
                             margin: "0"
                         }}>
-                            {this.props.colorCode}
+                            {this.props.colorCode.toUpperCase()}
                         </p>
                     </div>
                 </div>

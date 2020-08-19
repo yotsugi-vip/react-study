@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Timer from './Timer';
 import EasySearch from './EasySearch';
-
+import { Comp } from './test';
 class App extends Component {
 
   render() {
@@ -9,7 +9,7 @@ class App extends Component {
       <div>
         <h1>Hello new world</h1>
         <p>Really!?</p>
-        <EasySearch />
+        <Comp />
         <Timer width={300} height={300} radius={200} />
         <p>🤔</p>
       </div>
