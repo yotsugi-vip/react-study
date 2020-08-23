@@ -1,47 +1,34 @@
 import React, { Component } from "react";
 import Slider from "@material-ui/core/Slider";
+import { type } from "os";
+import { colors } from "@material-ui/core";
+import { RGB } from "konva/types/filters/RGB";
 
 type updateValType = (val: number | string) => void;
-type RGB = "red" | "green" | "blue";
 
+type redType = "red";
+type greenType = "green";
+type blueType = "blue";
+type RGB = redType | greenType | blueType;
+
+interface IProps_Test2 { }
 interface IState_Test2 {
     Hex: string,
     R: string,
     G: string,
     B: string
 }
-interface IProps_Test2 { }
 export default class Test2 extends Component<IProps_Test2, IState_Test2> {
     state: IState_Test2;
     props: IProps_Test2;
     constructor(props: IProps_Test2) {
         super(props);
         this.state = {
-            Hex: "0",
+            Hex: "000000",
             B: "0",
             G: "0",
             R: "0"
         }
-    }
-
-    private getHexfromRgb(rgb: RGB, val: number) {
-        let hex = ("00" + val.toString(16)).slice(-2);
-        let ret = "";
-        switch (rgb) {
-            case "red":
-                ret = `#${hex}0000`;
-                break;
-            case "green":
-                ret = `#00${hex}00`;
-                break;
-            case "blue":
-                ret = `#0000${hex}`;
-                break;
-            default:
-                ret = "#000000";
-                break;
-        }
-        return ret;
     }
 
     updateVal_Hex = (hex: number | string): void => {
@@ -128,17 +115,23 @@ export default class Test2 extends Component<IProps_Test2, IState_Test2> {
                 <p>R:{this.state.R}</p>
                 <p>G:{this.state.G}</p>
                 <p>B:{this.state.B}</p>
-                <B val={this.state.Hex} update={this.updateVal_Hex} />
-                <A val={this.state.R} update={this.updateVal_R} />
-                <A val={this.state.G} update={this.updateVal_G} />
-                <A val={this.state.B} update={this.updateVal_B} />
+                <div style={{
+                    display: "flex",
+                    marginBottom:"10px"
+                }}>
+                    <B val={this.state.Hex} update={this.updateVal_Hex} />
+                    <C hex={this.state.Hex} />
+                </div>
+                <A val={this.state.R} update={this.updateVal_R} color="red" />
+                <A val={this.state.G} update={this.updateVal_G} color="green" />
+                <A val={this.state.B} update={this.updateVal_B} color="blue" />
             </>
         )
     }
 }
 
-interface IProps_B { update: updateValType, val: string };
-interface IState_B { };
+interface IProps_B { update: updateValType, val: string }
+interface IState_B { }
 class B extends Component<IProps_B, IState_B> {
     props: IProps_B;
     state: IState_B;
@@ -161,8 +154,8 @@ class B extends Component<IProps_B, IState_B> {
     }
 }
 
-interface IProps_A { update: updateValType, val: string };
-interface IState_A { };
+interface IProps_A { update: updateValType, val: string, color: RGB }
+interface IState_A { }
 class A extends Component<IProps_A, IState_A> {
     props: IProps_A;
     state: IState_A;
@@ -170,24 +163,81 @@ class A extends Component<IProps_A, IState_A> {
         super(props);
     }
 
-    onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    private onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.props.update(event.target.value);
     }
 
-    onChangeSlider = (event: React.ChangeEvent<{}>, value: number | number[]) => {
+    private onChangeSlider = (event: React.ChangeEvent<{}>, value: number | number[]) => {
         this.props.update(value as number);
+    }
+
+    private getHexfromRgb = (): string => {
+        let ret: string;
+        let hex = ('00' + parseInt(this.props.val, 10).toString(16)).slice(-2);
+        if (this.props.color === 'red') {
+            ret = `${hex}0000`
+        } else if (this.props.color === 'green') {
+            ret = `00${hex}00`
+        } else if (this.props.color === 'blue') {
+            ret = `0000${hex}`
+        }
+        return ret;
     }
 
     render() {
         return (
             <>
                 <div>
-                    <input type="text" value={this.props.val} onChange={this.onChange} />
+                    <div style={{
+                        display: "flex",
+                    }}>
+                        <input type="text" value={this.props.val} onChange={this.onChange} />
+                        <C hex={this.getHexfromRgb()} />
+                    </div>
                     <Slider
                         max={255} min={0}
                         value={parseInt(this.props.val, 10)}
                         onChange={this.onChangeSlider}
                     />
+                </div>
+            </>
+        )
+    }
+}
+
+interface IProps_C { hex: string }
+interface IState_C { }
+class C extends Component<IProps_C, IState_C>{
+    props: IProps_C;
+    state: IState_C;
+    constructor(props: IProps_C) {
+        super(props);
+
+    }
+
+    private blackOrWhite(colorCode: string): string {
+        let red = parseInt(colorCode.substr(1, 2));
+        let green = parseInt(colorCode.substr(3, 2));
+        let blue = parseInt(colorCode.substr(5, 2));
+        let brightness = ((red * 299) + (green * 587) + (blue * 114)) / 1000;
+        return brightness < 125 ? "#FFFFFF" : "#000000";
+    }
+
+    render() {
+        return (
+            <>
+                <div style={{
+                    backgroundColor: "#" + this.props.hex,
+                    marginLeft: "10px",
+                    width: "80px",
+                    textAlign: "center",
+                    borderRadius:"5px"
+                }}>
+                    <p style={{
+                        color: this.blackOrWhite("#" + this.props.hex),
+                        margin: 0,
+                    }}
+                    >{this.props.hex}</p>
                 </div>
             </>
         )

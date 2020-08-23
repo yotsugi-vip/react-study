@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Timer from './Timer';
 import EasySearch from './EasySearch';
 import { Comp } from './test';
-import Test2 from "./test2";
+import Test2 from "./Rgb";
 
 class App extends Component {
 
