@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component as RgbComponent } from "react";
+import { Component } from "react";
 import Slider from "@material-ui/core/Slider";
 import { TextField } from '@material-ui/core';
 
@@ -17,7 +17,7 @@ interface IState_RgbHexSearch {
     G: string,
     B: string
 }
-export default class RgbHexSearch extends RgbComponent<IProps_RgbHexSearch, IState_RgbHexSearch> {
+export default class RgbHexSearch extends Component<IProps_RgbHexSearch, IState_RgbHexSearch> {
     state: IState_RgbHexSearch;
     constructor(props: IProps_RgbHexSearch) {
         super(props);
@@ -117,20 +117,24 @@ export default class RgbHexSearch extends RgbComponent<IProps_RgbHexSearch, ISta
     render() {
         return (
             <>
-                <p>Hex:{this.state.Hex}</p>
-                <p>R:{this.state.R}</p>
-                <p>G:{this.state.G}</p>
-                <p>B:{this.state.B}</p>
                 <div style={{
-                    display: "flex",
-                    marginBottom: "10px"
+                    display: "flex"
                 }}>
-                    <HexInput val={this.state.Hex} update={this.updateVal_Hex} />
-                    <ColorTips hex={this.state.Hex} />
+                    <div style={{
+                        display: "flex",
+                        marginBottom: "10px"
+                    }}>
+                        <HexInput val={this.state.Hex} update={this.updateVal_Hex} />
+                        <ColorTips hex={this.state.Hex} />
+                    </div>
+                    <div style={{
+                        marginLeft:"20px"
+                    }}>
+                        <A val={this.state.R} update={this.updateVal_R} color="red" />
+                        <A val={this.state.G} update={this.updateVal_G} color="green" />
+                        <A val={this.state.B} update={this.updateVal_B} color="blue" />
+                    </div>
                 </div>
-                <A val={this.state.R} update={this.updateVal_R} color="red" />
-                <A val={this.state.G} update={this.updateVal_G} color="green" />
-                <A val={this.state.B} update={this.updateVal_B} color="blue" />
             </>
         )
     }
@@ -138,7 +142,7 @@ export default class RgbHexSearch extends RgbComponent<IProps_RgbHexSearch, ISta
 
 interface IProps_HexInput { update: updateValType, val: string }
 interface IState_HexInput { }
-class HexInput extends RgbComponent<IProps_HexInput, IState_HexInput> {
+class HexInput extends Component<IProps_HexInput, IState_HexInput> {
     state: IState_HexInput;
     constructor(props: IProps_HexInput) {
         super(props);
@@ -162,7 +166,7 @@ class HexInput extends RgbComponent<IProps_HexInput, IState_HexInput> {
 
 interface IProps_A { update: updateValType, val: string, color: RGB }
 interface IState_A { }
-class A extends RgbComponent<IProps_A, IState_A> {
+class A extends Component<IProps_A, IState_A> {
     state: IState_A;
     constructor(props: IProps_A) {
         super(props);
@@ -179,7 +183,9 @@ class A extends RgbComponent<IProps_A, IState_A> {
 
     private getHexfromRgb = (): string => {
         let ret: string = "000000";
-        let hex = ('00' + parseInt(this.props.val, 10).toString(16)).slice(-2);
+        let hex = this.props.val === ""
+            ? "00"
+            : ('00' + parseInt(this.props.val, 10).toString(16)).slice(-2);
         if (this.props.color === 'red') {
             ret = `${hex}0000`
         } else if (this.props.color === 'green') {
@@ -216,7 +222,7 @@ class A extends RgbComponent<IProps_A, IState_A> {
 
 interface IProps_ColorTips { hex: string }
 interface IState_ColorTips { }
-class ColorTips extends RgbComponent<IProps_ColorTips, IState_ColorTips>{
+class ColorTips extends Component<IProps_ColorTips, IState_ColorTips>{
     state: IState_ColorTips;
     constructor(props: IProps_ColorTips) {
         super(props);
@@ -241,7 +247,7 @@ class ColorTips extends RgbComponent<IProps_ColorTips, IState_ColorTips>{
                     width: "80px",
                     textAlign: "center",
                     borderRadius: "5px",
-                    verticalAlign:"bottom"
+                    maxHeight:"60px",
                 }}>
                     <p style={{
                         color: this.blackOrWhite("#" + this.props.hex),
