@@ -8,7 +8,18 @@ import { Paper, TextField, Button, Menu, MenuItem } from '@material-ui/core';
 interface IState_Palette { colors: Array<string> }
 interface IProps_Palette { }
 export default class Palette extends Component<IProps_Palette, IState_Palette> {
-    data = ["000000", "FFFFFF", "121212", "343434", "565656", "787878", "9A9A9A"];
+    private data = [
+        "000000",
+        "121212",
+        "343434",
+        "565656",
+        "787878",
+        "9A9A9A",
+        "BCBCBC",
+        "DEDEDE",
+        "FFFFFF"
+    ];
+    private input: string = "000000";
     constructor(props: IProps_Palette) {
         super(props);
         this.state = {
@@ -23,7 +34,15 @@ export default class Palette extends Component<IProps_Palette, IState_Palette> {
     }
 
     register = () => {
-        
+        this.state.colors.push(this.input);
+        this.setState({
+            colors: this.state.colors
+        });
+    }
+
+    onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        this.input = event.target.value;
+        console.log(this.input);
     }
 
     render() {
@@ -40,16 +59,22 @@ export default class Palette extends Component<IProps_Palette, IState_Palette> {
                         backgroundColor: "red",
                         borderRadius: "15px"
                     }} />
-                    <TextField helperText="ColorCode" />
-                    <Button style={{
-                        border: "solid 1px black",
-                        height: "30px",
-                        marginLeft: "10px",
-                        marginTop: "auto",
-                        marginBottom: "1px"
-                    }}>
+                    <TextField helperText="ColorCode" onChange={this.onChange} />
+                    <Button
+                        style={{
+                            border: "solid 1px black",
+                            height: "30px",
+                            marginLeft: "10px",
+                            marginTop: "auto",
+                            marginBottom: "1px"
+                        }}
+                        onClick={this.register}
+                    >
                         <p>register</p>
                     </Button>
+                </div>
+                <div>
+                    <p>JSONファイルを直接操作する</p>
                 </div>
                 {this.state.colors.map(val => (
                     <Chip colorCode={val} deleteFunc={this.delete} />
