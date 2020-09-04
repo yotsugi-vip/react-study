@@ -9,6 +9,6 @@ export const PUSH_COLORS = 'PUSH_COLORS';
 export function PushColors(colors: Array<string>) {
     return {
         type: PUSH_COLORS,
-        colors
+        payload: colors
     }
 }
